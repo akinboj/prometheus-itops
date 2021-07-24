@@ -1,21 +1,31 @@
+# Ref: https://github.com/prometheus/alertmanager
+# Prometheus alertmanager version - 0.22.2 - https://prometheus.io/download/
 ARG ARCH="amd64"
 ARG OS="linux"
 FROM quay.io/prometheus/busybox-${OS}-${ARCH}:latest
-LABEL maintainer="The Prometheus Authors <prometheus-developers@googlegroups.com>"
 
 ARG ARCH="amd64"
 ARG OS="linux"
-COPY .build/${OS}-${ARCH}/amtool       /bin/amtool
-COPY .build/${OS}-${ARCH}/alertmanager /bin/alertmanager
-COPY examples/ha/alertmanager.yml      /etc/alertmanager/alertmanager.yml
+COPY amtool /bin/amtool
+COPY alertmanager /bin/alertmanager
+COPY alertmanager.yml /etc/alertmanager/alertmanager.yml
+
+# Create user and add to group
+RUN addgroup prometheus
+RUN adduser pegacorn --no-create-home --disabled-password --gecos "" -G prometheus
 
 RUN mkdir -p /alertmanager && \
-    chown -R nobody:nobody etc/alertmanager /alertmanager
+    chown -R pegacorn:prometheus etc/alertmanager /alertmanager
 
-USER       nobody
+USER       pegacorn
 EXPOSE     9093
 VOLUME     [ "/alertmanager" ]
 WORKDIR    /alertmanager
+
+ARG IMAGE_BUILD_TIMESTAMP
+ENV IMAGE_BUILD_TIMESTAMP=${IMAGE_BUILD_TIMESTAMP}
+RUN echo IMAGE_BUILD_TIMESTAMP=${IMAGE_BUILD_TIMESTAMP}
+
 ENTRYPOINT [ "/bin/alertmanager" ]
 CMD        [ "--config.file=/etc/alertmanager/alertmanager.yml", \
              "--storage.path=/alertmanager" ]

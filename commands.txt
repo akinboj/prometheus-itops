@@ -1,0 +1,3 @@
+docker build --rm --build-arg IMAGE_BUILD_TIMESTAMP="%date% %time%" -t pegacorn-prometheus-alertmanager:1.0.0-snapshot --file Dockerfile .
+
+docker run --name alertmanager -d -p 127.0.0.1:9093:9093 pegacorn-prometheus-alertmanager:1.0.0-snapshot
