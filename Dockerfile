@@ -15,8 +15,8 @@ RUN adduser pegacorn --no-create-home --disabled-password --gecos "" -G promethe
 RUN mkdir -p /alertmanager && \
     chown -R pegacorn:prometheus etc/alertmanager /alertmanager
 
-USER       pegacorn
-EXPOSE     9093
+USER pegacorn
+EXPOSE 9093 5001
 VOLUME     [ "/alertmanager" ]
 WORKDIR    /alertmanager
 

@@ -2,4 +2,4 @@ docker build --rm --build-arg IMAGE_BUILD_TIMESTAMP="%date% %time%" -t pegacorn-
 
 ## docker run --name alertmanager -d -p 127.0.0.1:9093:9093 pegacorn-prometheus-alertmanager:1.0.0-snapshot
 
-helm upgrade pegacorn-prometheus-alertmanager-site-a --install --namespace site-a --set serviceName=pegacorn-prometheus-alertmanager,imagePullPolicy=Never,basePort=32560,imageTag=1.0.0-snapshot,numOfPods=1 helm
+helm upgrade pegacorn-prometheus-alertmanager-site-a --install --namespace site-a --set serviceName=pegacorn-prometheus-alertmanager,imagePullPolicy=Never,basePort=32450,imageTag=1.0.0-snapshot,numOfPods=1 helm

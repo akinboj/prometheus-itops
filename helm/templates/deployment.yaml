@@ -73,7 +73,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.serviceAccountName
-        image: {{ .Values.dockerRepo }}pegacorn-prometheus-itops:{{ .Values.imageTag }}            
+        image: {{ .Values.dockerRepo }}pegacorn-prometheus-alertmanager:{{ .Values.imageTag }}            
         imagePullPolicy: {{ .Values.imagePullPolicy | default "IfNotPresent" }}
         livenessProbe:
           tcpSocket:
@@ -84,8 +84,8 @@ spec:
         - containerPort: 9093
           name: alertmanager
           protocol: TCP
-        - containerPort: 8778
-          name: jolokia
+        - containerPort: 5001
+          name: webhook
           protocol: TCP
         readinessProbe:
           tcpSocket:
