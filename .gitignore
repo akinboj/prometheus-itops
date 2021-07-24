@@ -1,11 +1,3 @@
-/data/
-/alertmanager
-/amtool
-/.build
-/.release
-/.tarballs
-/vendor
-
 !.golangci.yml
 !/cli/testdata/*.yml
 !/cli/config/testdata/*.yml
