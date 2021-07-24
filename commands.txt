@@ -2,4 +2,4 @@ docker build --rm --build-arg IMAGE_BUILD_TIMESTAMP="%date% %time%" -t pegacorn-
 
 ## docker run --name prometheus -d -p 127.0.0.1:9090:9090 pegacorn-prometheus-itops:1.0.0-snapshot
 
-helm upgrade pegacorn-prometheus-itops-site-a --install --namespace site-a --set serviceName=pegacorn-prometheus-itops,imagePullPolicy=Never,basePort=32550,imageTag=1.0.0-snapshot,numOfPods=1 helm
+helm upgrade pegacorn-prometheus-itops-site-a --install --namespace site-a --set serviceName=pegacorn-prometheus-itops,imagePullPolicy=Never,basePort=32550,hostPathConfig=/data/prometheus-config,hostPathStorage=/data/prometheus-storage,imageTag=1.0.0-snapshot,numOfPods=1 helm

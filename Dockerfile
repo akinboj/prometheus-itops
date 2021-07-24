@@ -6,7 +6,6 @@ FROM quay.io/prometheus/busybox-${OS}-${ARCH}:latest
 
 COPY prometheus /bin/prometheus
 COPY promtool /bin/promtool
-COPY prometheus.yml /etc/prometheus/prometheus.yml
 COPY console_libraries/ /usr/share/prometheus/console_libraries/
 COPY consoles/ /usr/share/prometheus/consoles/
 COPY LICENSE /LICENSE
@@ -17,6 +16,7 @@ COPY npm_licenses.tar.bz2 /npm_licenses.tar.bz2
 RUN addgroup prometheus
 RUN adduser pegacorn --no-create-home --disabled-password --gecos "" -G prometheus
 
+RUN mkdir -p /etc/prometheus
 RUN ln -s /usr/share/prometheus/console_libraries /usr/share/prometheus/consoles/ /etc/prometheus/
 RUN mkdir -p /prometheus && \
     chown -R pegacorn:prometheus etc/prometheus /prometheus

@@ -93,5 +93,17 @@ spec:
           initialDelaySeconds: 15
         securityContext:
           privileged: false
+        volumeMounts:
+        - name: config
+          mountPath: /etc/prometheus/
+        - name: storage
+          mountPath: /prometheus/
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
+      volumes:
+      - name: config
+        hostPath:
+          path: {{ .Values.hostPathConfig }}
+      - name: storage
+        hostPath:
+          path: {{ .Values.hostPathStorage }}
 
