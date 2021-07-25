@@ -18,6 +18,9 @@ spec:
     metadata:
       annotations:
         fabric8.io/metrics-path: dashboard/file/camel-routes.json/?var-project={{ .Values.serviceName }}&var-version={{ .Values.imageTag }}
+        # Enable prometheus scrape config at pod level
+        prometheus.io/port: "9093"
+        prometheus.io/scrape: "true"
       labels:
         app: {{ .Values.serviceName }}
         version: "{{ .Values.imageTag }}"
@@ -93,5 +96,17 @@ spec:
           initialDelaySeconds: 15
         securityContext:
           privileged: false
+        volumeMounts:
+        - name: config
+          mountPath: /etc/alertmanager/
+        - name: storage
+          mountPath: /alertmanager/
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
+      volumes:
+      - name: config
+        hostPath:
+          path: {{ .Values.hostPathConfig }}
+      - name: storage
+        hostPath:
+          path: {{ .Values.hostPathStorage }}
 

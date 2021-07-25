@@ -6,12 +6,13 @@ FROM quay.io/prometheus/busybox-${OS}-${ARCH}:latest
 
 COPY amtool /bin/amtool
 COPY alertmanager /bin/alertmanager
-COPY alertmanager.yml /etc/alertmanager/alertmanager.yml
+# COPY alertmanager.yml /etc/alertmanager/alertmanager.yml
 
 # Create user and add to group
 RUN addgroup prometheus
 RUN adduser pegacorn --no-create-home --disabled-password --gecos "" -G prometheus
 
+RUN mkdir -p /etc/alertmanager
 RUN mkdir -p /alertmanager && \
     chown -R pegacorn:prometheus etc/alertmanager /alertmanager
 
