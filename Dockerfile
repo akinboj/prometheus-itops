@@ -6,7 +6,6 @@ FROM quay.io/prometheus/busybox-${OS}-${ARCH}:latest
 
 COPY amtool /bin/amtool
 COPY alertmanager /bin/alertmanager
-# COPY alertmanager.yml /etc/alertmanager/alertmanager.yml
 
 # Create user and add to group
 RUN addgroup prometheus
