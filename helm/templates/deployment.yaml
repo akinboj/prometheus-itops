@@ -18,6 +18,9 @@ spec:
     metadata:
       annotations:
         fabric8.io/metrics-path: dashboard/file/camel-routes.json/?var-project={{ .Values.serviceName }}&var-version={{ .Values.imageTag }}
+        # Enable prometheus scrape config at pod level
+        prometheus.io/port: "9090"
+        prometheus.io/scrape: "true"
       labels:
         app: {{ .Values.serviceName }}
         version: "{{ .Values.imageTag }}"
