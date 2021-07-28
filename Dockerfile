@@ -24,20 +24,17 @@ RUN apk add --no-cache gcc g++
 WORKDIR $GOPATH/src/github.com/grafana/grafana
 
 COPY go.mod go.sum embed.go ./
-
-RUN go mod verify
-
 COPY cue cue
 COPY public/app/plugins public/app/plugins
 COPY pkg pkg
 COPY build.go package.json ./
 
+RUN go mod verify
+
 RUN go run build.go build
 
 # Final stage
-FROM alpine:3.13
-
-LABEL maintainer="Grafana team <hello@grafana.com>"
+FROM alpine:3.14
 
 ARG GF_UID="472"
 ARG GF_GID="0"
@@ -52,8 +49,11 @@ ENV PATH="/usr/share/grafana/bin:$PATH" \
 
 WORKDIR $GF_PATHS_HOME
 
-RUN apk add --no-cache ca-certificates bash tzdata && \
-    apk add --no-cache openssl musl-utils
+RUN apk add --no-cache ca-certificates \
+    bash \
+    tzdata \
+    openssl \
+    musl-utils
 
 COPY conf ./conf
 
@@ -83,11 +83,12 @@ COPY --from=js-builder /usr/src/app/tools ./tools
 
 EXPOSE 3000
 
+COPY ./packaging/docker/run.sh /run.sh
+RUN chown -R grafana:0 /usr/share/grafana/
+
 ARG IMAGE_BUILD_TIMESTAMP
 ENV IMAGE_BUILD_TIMESTAMP=${IMAGE_BUILD_TIMESTAMP}
 RUN echo IMAGE_BUILD_TIMESTAMP=${IMAGE_BUILD_TIMESTAMP}
-
-COPY ./packaging/docker/run.sh /run.sh
 
 USER grafana
 ENTRYPOINT [ "/run.sh" ]
